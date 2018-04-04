@@ -30,10 +30,10 @@ import java.util.UUID;
 @RequestMapping("/upload")
 public class FileController {
 
-    @RequestMapping(value = "/ToUploadFile", method = { RequestMethod.POST })
+    @RequestMapping(value = "/ToUploadFile", method = {RequestMethod.POST})
     @ResponseBody
     public Integer ToUploadFile(@RequestParam("firstfile") MultipartFile firstfile,
-                         HttpServletRequest request, HttpServletResponse response) {
+                                HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setCharacterEncoding("utf-8");
         } catch (UnsupportedEncodingException e1) {
@@ -105,6 +105,7 @@ public class FileController {
      /*
     文件上传
      */
+
     /**
      * luk
      * 支持多文件上传
@@ -112,11 +113,10 @@ public class FileController {
      * other programmer can refer to this demo
      *
      * @param request
-     * @return
-     * 例：{"msg":"success","code":0,"filelist":["C:/home/personal/upload/阿里巴巴Java开发手册（正式版）.pdf","C:/home/personal/upload/测试记录.txt","C:/home/personal/upload/公司发票信息.png"]}
+     * @return 例：{"msg":"success","code":0,"filelist":["C:/home/personal/upload/阿里巴巴Java开发手册（正式版）.pdf","C:/home/personal/upload/测试记录.txt","C:/home/personal/upload/公司发票信息.png"]}
      * @throws Exception
      */
-    @RequestMapping(value = "/uploadfiles", method = RequestMethod.POST, consumes ="multipart/form-data", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/uploadfiles", method = RequestMethod.POST, consumes = "multipart/form-data", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public R uploadfiles(HttpServletRequest request) throws Exception {
         String uploadUrl = "C:/home";
@@ -143,9 +143,9 @@ public class FileController {
         for (Map.Entry<String, List<MultipartFile>> entry : map.entrySet()) {
             List<MultipartFile> list = entry.getValue();
             for (MultipartFile multipartFile : list) {
-                if(multipartFile.getSize() > 1048576*20){
+                if (multipartFile.getSize() > 1048576 * 20) {
                     return R.error("文件不能超过20M");
-                }else {
+                } else {
                     multipartFile.transferTo(new File(filePath
                             + multipartFile.getOriginalFilename()));
                     pathList.add(browsePath + multipartFile.getOriginalFilename());
@@ -155,7 +155,7 @@ public class FileController {
 //        String path= (String) pathList.get(0);
 //        String filepath=path.split("/contfiles")[1];
 //        filepath=file_RootPath+filepath;
-        return R.ok().put("filelist",pathList);  //R函数请改成你们自己的基础返回对象封装函数
+        return R.ok().put("filelist", pathList);  //R函数请改成你们自己的基础返回对象封装函数
     }
 
 
