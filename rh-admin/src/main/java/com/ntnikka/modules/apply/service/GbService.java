@@ -26,10 +26,21 @@ public interface GbService extends IService<GbEntity> {
 	 * 保存国民经济行业分类库
 	 */
 	void save(GbEntity gb);
-	
 	/**
 	 * 修改用户
 	 */
 	void update(GbEntity gb);
+	/**
+	 * 列表
+	 */
+	List<GbEntity> queryAll();
+
+	List<Map<String,Object>> getAllCids();
+
+	List<Map<String,Object>> getAllBids();
+
+	List<Map<String,Object>> getAllMids();
+
+	List<Map<String,Object>> getAllLids();
 
 }
