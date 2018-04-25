@@ -4,7 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [			
 			{ label: '用户ID', name: 'userId', index: "user_id", width: 45, key: true },
-			{ label: '用户名', name: 'username', width: 75 },
+			{ label: '用户名', name: 'username', sortable: true,width: 75 },
             { label: '所属部门', name: 'deptName', sortable: false, width: 75 },
 			{ label: '邮箱', name: 'email', width: 90 },
 			{ label: '手机号', name: 'mobile', width: 100 },
@@ -13,7 +13,12 @@ $(function () {
 					'<span class="label label-danger">禁用</span>' : 
 					'<span class="label label-success">正常</span>';
 			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85}
+			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85},
+            { label: '详情', name: 'userId', width: 65,
+                formatter: function (value,options,row) {
+                    return '<span class="label label-danger pointer" onclick="vm.audit(\''+value+'\')">详情</span>'
+                }
+            }
         ],
 		viewrecords: true,
         height: 385,
@@ -36,6 +41,7 @@ $(function () {
             order: "order"
         },
         gridComplete:function(){
+            // var ids=$("#jqGrid").jqGrid('getDataIDs');
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
@@ -63,6 +69,8 @@ var vm = new Vue({
             username: null
         },
         showList: true,
+        showList2:false,
+        showList3:false,
         title:null,
         roleList:{},
         user:{
@@ -76,8 +84,25 @@ var vm = new Vue({
         query: function () {
             vm.reload();
         },
+
+        audit:function (value) {
+            var userId = value;
+            if(userId == null){
+                return ;
+            }
+
+            vm.showList = false;
+            vm.showList2=true;
+            vm.title = "详情";
+
+            vm.getUser(userId);
+            //获取角色信息
+            this.getRoleList();
+        },
+
         add: function(){
             vm.showList = false;
+            vm.showList3=true;
             vm.title = "新增";
             vm.roleList = {};
             vm.user = {deptName:null, deptId:null, status:1, roleIdList:[]};
@@ -106,6 +131,7 @@ var vm = new Vue({
             }
 
             vm.showList = false;
+            vm.showList3 = true;
             vm.title = "修改";
 
             vm.getUser(userId);
@@ -190,6 +216,8 @@ var vm = new Vue({
         },
         reload: function () {
             vm.showList = true;
+            vm.showList2 = false;
+            vm.showList3 = false;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{
                 postData:{'username': vm.q.username},
